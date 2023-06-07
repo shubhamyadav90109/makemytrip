@@ -67,10 +67,10 @@ pipeline {
                  echo "List the docker images present in local"
                  docker images
                  echo "Tagging the Docker Image: In Progress"
-                 docker tag makemytrip-ms:latest 559220132560.dkr.ecr.ap-south-1.amazonaws.com/shubhamyadav1314/makemytrip:latest
+                 docker tag makemytrip:latest public.ecr.aws/s0l5p4w5/makemytrip:latest
                  echo "Tagging the Docker Image: Completed"
                  echo "Push Docker Image to ECR : In Progress"
-                 docker push 559220132560.dkr.ecr.ap-south-1.amazonaws.com/shubhamyadav1314/makemytrip:latest
+                 docker push public.ecr.aws/s0l5p4w5/makemytrip:latest
                  echo "Push Docker Image to ECR : Completed"
                  """
                  }
