@@ -1,4 +1,4 @@
-FROM tomcat:8.0.51-jre11-alpine
+FROM tomcat:8.0.51-jre8-alpine
 COPY ./target/makemytrip*.jar /usr/local/tomcat/webapps
 EXPOSE  8080
 USER makemytrip
