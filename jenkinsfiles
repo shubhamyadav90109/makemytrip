@@ -18,6 +18,20 @@ pipeline {
 				echo 'code compilation is completed'
             }
         }
+        stage('Sonarqube Code Quality') {
+            environment {
+                scannerHome = tool 'qube'
+            }
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh 'mvn sonar:sonar'
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Code Test') {
             steps {
                 echo 'code testing is starting'
@@ -73,19 +87,6 @@ pipeline {
                  docker push 333820700313.dkr.ecr.ap-south-1.amazonaws.com/makemytrip:latest
                  echo "Push Docker Image to ECR : Completed"
                  """
-                 }
-              }
-           }
-        }
-        stage('Upload the docker Image to Nexus') {
-           steps {
-              script {
-                 withCredentials([usernamePassword(credentialsId: 'nexuscred', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                 sh 'docker login http://65.2.179.8:8085/repository/makemytrip/ -u admin -p ${PASSWORD}'
-                 echo "Push Docker Image to Nexus : In Progress"
-                 sh 'docker tag makemytrip 65.2.179.8:8085/makemytrip:latest'
-                 sh 'docker push 65.2.179.8:8085/makemytrip'
-                 echo "Push Docker Image to Nexus : Completed"
                  }
               }
            }
